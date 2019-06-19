@@ -1,0 +1,46 @@
+{
+  "name": "favourite-things",
+  "version": "1.0.0",
+  "description": "A list of users's favourite things",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --progress --watch ",
+    "watch": "webpack-dev-server --progress --watch"
+  },
+  "author": "Friday Godswill <faradayyg@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-runtime": "^6.26.0",
+    "css-loader": "^0.28.9",
+    "moment": "^2.21.0",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.1",
+    "sweetalert": "^2.1.0",
+    "vee-validate": "^2.0.3",
+    "vue": "^2.5.13",
+    "vue-cookie": "^1.1.4",
+    "vue-loader": "^14.1.1",
+    "vue-router": "^3.0.1",
+    "vue-template-compiler": "^2.5.13",
+    "vue-template-loader": "^0.4.0",
+    "vue-top-progress": "^0.7.0",
+    "vue2-datepicker": "^1.8.3",
+    "vuex": "^3.0.1",
+    "webpack": "^3.10.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "browser-sync": "^2.23.6",
+    "browser-sync-webpack-plugin": "^2.0.1",
+    "webpack-dev-server": "^2.11.1"
+  }
+}
