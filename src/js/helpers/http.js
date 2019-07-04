@@ -3,9 +3,9 @@ import VueCookie from 'vue-cookie';
 
 let headers = {},
     running = 0;
-const config = {
-    "cookie_name": 'stuff',
-    "base_url": 'http://localhost:8000'
+export const config = {
+    "cookie_name": '_uat',
+    "base_url": 'http://localhost:8000/api'
 }
 headers['Authorization'] = 'Bearer ' + VueCookie.get(config.cookie_name);
 headers['Accept'] = 'application/json';
@@ -33,18 +33,20 @@ const http = {
         })
         .catch((error) => {
           let resp = error.response;
-          if(resp.status && resp.status == 401)
-          {
-//            EventBus.$emit('token.expired');
-            VueCookie.delete(config.cookie_name);
-          }
-          else if(resp.status == 422)
-          {
-            window.location.reload();
-          }
-          else if(resp.status == 425)
-          {
-            window.location.replace('/verify/');
+          if (resp && resp.hasOwnProperty('status')) {
+              if(resp.status && resp.status == 401)
+              {
+    //            EventBus.$emit('token.expired');
+                VueCookie.delete(config.cookie_name);
+              }
+              else if(resp.status == 422)
+              {
+                window.location.reload();
+              }
+              else if(resp.status == 425)
+              {
+                window.location.replace('/verify/');
+              }
           }
           respond(reject, resp);
         });

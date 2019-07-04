@@ -20,9 +20,8 @@ from thingsApi.views import Home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     # all API requests 
-    path(r'api/', include('thingsApi.urls')),
+    path('api/', include('thingsApi.urls')),
 
     # A catch-all route for routing all vue SPA requests 
     re_path(r".*", Home.as_view()),

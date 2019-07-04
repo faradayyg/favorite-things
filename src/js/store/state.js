@@ -1,3 +1,5 @@
 export default {
-    userToken: null
+    categories: [],
+    userToken: null,
+    refreshToken: null
 }

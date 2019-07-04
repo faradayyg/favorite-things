@@ -22,7 +22,7 @@ module.exports = {
   },
   module:
   {
-  	loaders :[
+  	rules :[
 	  	{
 	        test: /\.vue$/,
 	        loader: 'vue-loader'
@@ -35,6 +35,25 @@ module.exports = {
       {
         test: /\.scss$/,
         loaders: ["style-loader", "css-loader", "sass-loader"]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader', // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+          {
+            loader: 'less-loader', // compiles Less to CSS
+          },
+        ]
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        loaders: ['style-loader', 'css-loader'],
       }
     ]
   },
@@ -44,5 +63,6 @@ module.exports = {
       port: 3000,
       proxy: 'http://localhost:8000/'
     })
-  ]
+  ],
+  mode: 'development'
 }
