@@ -26,7 +26,7 @@ SECRET_KEY = 'npg_%!7rez69-5legr$34s_$(iw&oae-flcwz)nv#z38vj%j5l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
