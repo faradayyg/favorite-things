@@ -79,7 +79,7 @@ local_settings.py
 venv/
 
 .env
-db.sqlite3
+# db.sqlite3
 
 # JS 
 node_modules/
