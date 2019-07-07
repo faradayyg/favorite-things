@@ -1,2 +1,3 @@
 
-web: gunicorn favouriteThings/wsgi.py
+web: gunicorn favouriteThings.wsgi
+
