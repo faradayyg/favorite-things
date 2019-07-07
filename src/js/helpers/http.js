@@ -6,7 +6,9 @@ let headers = {},
     running = 0;
 export const config = {
     "cookie_name": '_uat',
-    "base_url": 'http://localhost:8000/api'
+    // "base_url": 'http://localhost:8000/api'
+    "base_url": '/api'
+
 }
 headers['Authorization'] = 'Bearer ' + VueCookie.get(config.cookie_name);
 headers['Accept'] = 'application/json';
