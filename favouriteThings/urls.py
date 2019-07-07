@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.urls import include
 from thingsApi.views import Home
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-urlpatterns = [
+urlpatterns = staticfiles_urlpatterns()
+urlpatterns += [
     path('admin/', admin.site.urls),
     # all API requests 
     path('api/', include('thingsApi.urls')),
 
     # A catch-all route for routing all vue SPA requests 
-    re_path(r"^\b(?!static\/\b)\w*.", Home.as_view()),
     re_path(r".*", Home.as_view()),
+    # re_path(r".*", Home.as_view()),
 ]
