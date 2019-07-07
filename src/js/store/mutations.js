@@ -6,3 +6,7 @@ export const setUserData = (state, userToken) => {
 export const setCategories = (state, categories) => {
     state.categories = categories
 }
+
+export const setAjaxStatus = (state, status) => {
+	state.makingNetworkCall = status
+}

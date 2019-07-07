@@ -1,5 +1,6 @@
 import axios from 'axios';
 import VueCookie from 'vue-cookie';
+import store from '@/store/index.js';
 
 let headers = {},
     running = 0;
@@ -14,15 +15,17 @@ const http = {
   axios: axios.create({baseURL: config.base_url, headers: headers}),
   send(type, args) {
     if (!running) {
-//      EventBus.$emit('ajax.begun');
+      store.commit('setAjaxStatus', false)
     }
     running++;
     const respond = (func, resp) => {
       running--;
-      if (!running)
-//        EventBus.$emit('ajax.ended');
-      if (!resp)
+      if (!running) {
+       store.commit('setAjaxStatus', true)
+      }
+      if (!resp) {
         resp = {};
+      }
       func(resp.data, resp.headers, resp.status);
     };
     return new Promise(function (resolve, reject) {
@@ -36,7 +39,6 @@ const http = {
           if (resp && resp.hasOwnProperty('status')) {
               if(resp.status && resp.status == 401)
               {
-    //            EventBus.$emit('token.expired');
                 VueCookie.delete(config.cookie_name);
               }
               else if(resp.status == 422)

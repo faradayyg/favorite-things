@@ -6,7 +6,7 @@ from thingsApi.models import FavouriteThing, Category
 class FavouriteThingSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(max_length=100)
-    description = serializers.CharField(required=False)
+    description = serializers.CharField(required=False, default='', allow_null=True)
     ranking = serializers.IntegerField(required=False)
     # meta_data = serializers.CharField(required=False, allow_null=True, default='')
     category_id = serializers.IntegerField()

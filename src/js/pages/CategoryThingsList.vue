@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<things-list-component :url="url" />
+		<things-list-component :url="url" :category_id="id" />
 	</div>
 </template>
 

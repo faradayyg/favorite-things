@@ -7,10 +7,13 @@ import moment from 'moment';
 import http from './helpers/http';
 import FishUI from 'fish-ui'
 import store from './store/index';
+import {vueTopprogress} from "vue-top-progress";
+import swal from 'sweetalert';
 
 Vue.use(VueRouter);
 Vue.use(VueCookie);
-Vue.use(FishUI)
+Vue.use(vueTopprogress);
+Vue.use(FishUI);
 
 const router = new VueRouter({
 	routes:routes,
@@ -20,7 +23,25 @@ const router = new VueRouter({
 Vue.mixin({
     data () {
         return {
-            http: http
+            http,
+            swal
+        }
+    },
+    methods: {
+        confirmDialog(text = 'Are You Sure?', heading = 'Sure?', buttonText = ['No', 'Yes']) {
+            return new Promise ((resolve, reject) => {
+                swal({
+                    title: heading,
+                    text: text,
+                    buttons: buttonText
+                }).then(e => {
+                    if (e) {
+                        resolve(e)
+                    } else {
+                        reject(e)
+                    }
+                })
+            });
         }
     }
 })

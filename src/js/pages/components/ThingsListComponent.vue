@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<fish-button type="positive" @click="showModalFunction"><i class="fa fa-search"></i> Add Item</fish-button>
-		<fish-table :columns="tableColumns" noMoreText="No Favourite thing found" :data="thingsList"></fish-table>
+		<fish-table :columns="tableColumns" noMoreText="No Favourite Thing found" :data="thingsList"></fish-table>
 
 		<!--    Modal to add or edit favourite thing    -->
         <fish-modal :title=" ((isEditing == false) ? 'Add new' : 'Edit') + ' favourite thing'" :visible.sync="showModal">
@@ -9,9 +9,9 @@
               <fish-field label="Name">
                 <fish-input v-model="newData.title"></fish-input>
               </fish-field>
-              <fish-field label="category">
+              <fish-field v-if="category_id == null" label="category">
                 <fish-select search v-if="categories.length > 0" v-model="newData.category_id" :value="newData.category_id">
-                    <fish-option :index="category.id" :value="category.id" v-for="(category, index) in categories" :content="category.name"></fish-option>
+                    <fish-option :index="category.id" :value="category.id" v-for="(category, index) in categories" :key="index" :content="category.name"></fish-option>
                 </fish-select>
               </fish-field>
             <fish-field label="Description">
@@ -65,14 +65,25 @@
                     {
                         title: "Action",
                         key: "id",
-                        render: (h, record, column) => h('a', {
-                            class: 'fish button primary',
-                            on: {
-                               click : () => {
-                                    this.showEditDialog(record)
-                               }
-                            }
-                            }, 'Edit')
+                        render: (h, record, column) => 
+                        h('div',[
+	                        h('a', {
+	                            class: 'fish button primary',
+	                            on: {
+	                               click : () => {
+	                                    this.showEditDialog(record)
+	                               }
+	                            }
+	                            }, 'Edit'),
+	                        h('a', {
+	                        	class: 'fish button negative',
+	                        	on: {
+	                        		click: () => {
+	                        			this.confirmDelete(record)
+	                        		}
+	                        	}
+	                        }, 'Delete')
+                    	])
                     }
                 ]
             }
@@ -88,6 +99,17 @@
 		},
 		methods: {
 			...mapActions (['fetchCategories']),
+			deleteItem (record) {
+				this.http.delete(`/things/${record.id}/`).then(resp => {
+					this.$message.success('Successfully Deleted', 5000);
+					this.fetchItems()
+				})
+			},
+			confirmDelete (record) {
+				this.confirmDialog(`Sure to delete ${record.title}?`).then(resp => {
+					this.deleteItem(record)
+				})
+			},
 			fetchItems () {
 				this.http.get(this.url).then(resp => {
 					this.thingsList = resp
@@ -103,6 +125,9 @@
             },
             submitForm () {
                 let payload = this.newData
+                if (this.category_id != null) {
+                	payload.category_id = this.category_id
+                }
                 if (this.isEditing) {
                     this.http.put(`/things/${payload.id}/`, payload).then(resp => {
                         this.fetchItems()

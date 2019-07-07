@@ -1,5 +1,6 @@
 export default {
     categories: [],
     userToken: null,
-    refreshToken: null
+    refreshToken: null,
+    makingNetworkCall: false
 }

@@ -31,7 +31,7 @@ class FavouriteThing(models.Model):
         ordering = ('ranking', 'created_at')
 
     title = models.CharField("name of favourite thing", max_length=100)
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=500, null=True)
     ranking = models.PositiveSmallIntegerField()
     meta_data = models.TextField(default=None, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
