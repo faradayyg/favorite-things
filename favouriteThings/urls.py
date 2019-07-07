@@ -24,5 +24,6 @@ urlpatterns = [
     path('api/', include('thingsApi.urls')),
 
     # A catch-all route for routing all vue SPA requests 
+    re_path(r"^\b(?!static\/\b)\w*.", Home.as_view()),
     re_path(r".*", Home.as_view()),
 ]

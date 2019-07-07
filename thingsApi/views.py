@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.views import APIView
 from django.views.generic import TemplateView
 from thingsApi.serializers import FavouriteThingSerializer, CategorySerializer
 from thingsApi.models import FavouriteThing, Category
@@ -47,3 +48,8 @@ class CategoryThings(generics.RetrieveUpdateDestroyAPIView):
         queryset = FavouriteThing.objects.filter(user=request.user, category_id=pk)
         serializer = FavouriteThingSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class NotFound(APIView):
+    def get(self, request, format=None):
+        return Response({"message": "The resource you are looking for does not exist"}, 404)
