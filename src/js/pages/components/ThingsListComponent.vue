@@ -9,7 +9,7 @@
               <fish-field label="Name">
                 <fish-input v-model="newData.title"></fish-input>
               </fish-field>
-              <fish-field v-if="category_id == null" label="category">
+              <fish-field v-if="category_id == null || isEditing" label="category">
                 <fish-select search v-if="categories.length > 0" v-model="newData.category_id" :value="newData.category_id">
                     <fish-option :index="category.id" :value="category.id" v-for="(category, index) in categories" :key="index" :content="category.name"></fish-option>
                 </fish-select>
@@ -60,7 +60,17 @@
                     },
                     {
                         title: "Category",
-                        key: "category"
+                        key: "category",
+                        render: (h, record, column) => h('a', {
+                            on: {
+                                click: () => {
+                                    this.$router.push({
+                                        name: 'things.category.items',
+                                        params : {id: record.category_id}
+                                    })
+                                }
+                            }
+                        }, record.category)
                     },
                     {
                         title: "Action",

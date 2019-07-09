@@ -2,6 +2,7 @@
   <div>
       <fish-layout class="home" sider="l">
           <nav slot="header">
+            <div class="mobile-menu"> <span class="fa fa-bars"></span> </div>
             <div class="logo">Favorite things</div>
           </nav>
           <side-bar slot="sider"></side-bar>
@@ -20,22 +21,3 @@
         }
     }
 </script>
-
-<style>
-  .fish.layout.home > .header {
-    padding: 0;
-    background: #e0f0fa;
-  }
-  .fish.layout.home .has-sider > .content {
-    margin: 20px;
-    padding: 0.7em 1em;
-  }
-  .fish.layout.home .logo {
-    padding: 1em;
-  }
-  .logo {
-    padding: 0.7em .8em;
-    font-weight: bold;
-    font-size: 1.2rem;
-  }
-</style>

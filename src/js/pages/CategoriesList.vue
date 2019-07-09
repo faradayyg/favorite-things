@@ -51,7 +51,16 @@
                                             this.editCategory(record)
                                         }
                                     }
-                                },'Edit')
+                                },'Edit'),
+                                h('a', {
+                                    class: 'fish button negative',
+                                    style: 'margin-left: 10px',
+                                    on: {
+                                        click: () => {
+                                            this.deleteCategory(record)
+                                        }
+                                    }
+                                },'Delete')
                             ]
                         )
                     }
@@ -68,6 +77,13 @@
         },
         methods: {
             ...mapActions(['fetchCategories']),
+            deleteCategory (record) {
+                this.confirmDialog('Sure to delete?').then(resp => {
+                    this.http.delete(`/things/categories/${record.id}/`).then(resp => {
+                        this.fetchCategories()
+                    })
+                })
+            },
             editCategory (record) {
                 this.editing = record;
                 this.showModal = true;

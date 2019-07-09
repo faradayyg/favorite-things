@@ -17,6 +17,8 @@ class FavouriteThingSerializer(serializers.Serializer):
         user_id = self.context['request'].user.id
         validated_data['user_id'] = user_id
         category_id = validated_data['category_id']
+
+        # Check if the user manually set ranking
         if 'ranking' in validated_data:
             if self.update_rankings(validated_data['ranking'], user_id, category_id):
                 return FavouriteThing.objects.create(**validated_data)
@@ -25,7 +27,7 @@ class FavouriteThingSerializer(serializers.Serializer):
             least_ranking_thing = FavouriteThing.objects.filter(
                 category_id=category_id, user_id=user_id).order_by('-ranking').first()
 
-            # increment and save
+            # reorder and save
             if least_ranking_thing:
                 new_least_ranking = least_ranking_thing.ranking + 1
             else:
@@ -44,8 +46,8 @@ class FavouriteThingSerializer(serializers.Serializer):
         instance.save()
         return instance
 
-    def increment_ranking(self, favourite_thing):
-        favourite_thing.ranking = favourite_thing.ranking + 1
+    def increment_ranking(self, favourite_thing, new_ranking):
+        favourite_thing.ranking = new_ranking
         favourite_thing.save()
         return favourite_thing
 
@@ -55,8 +57,11 @@ class FavouriteThingSerializer(serializers.Serializer):
             ranking__gte=intended_ranking, category_id=category_id, user_id=user_id)
 
         # shift other ranks accordingly
+        count = 1
         for favourite_thing in subsequent_positions:
-            self.increment_ranking(favourite_thing)
+            self.increment_ranking(favourite_thing, intended_ranking + count)
+            count += 1
+
         # check if increment worked
         integrity_check = FavouriteThing.objects.filter(
             ranking=intended_ranking, category_id=category_id, user_id=user_id).first()
@@ -73,6 +78,7 @@ class CategorySerializer(serializers.Serializer):
     user = serializers.ReadOnlyField(source='user.email')
 
     def create(self, validated_data):
+        validated_data['user_id'] = self.context['request'].user.id
         return Category.objects.create(**validated_data)
     def update(self, instance, validated_data):
         for field in validated_data:

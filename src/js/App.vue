@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import '@css/custom.css' 
 import {mapState} from 'vuex';
 import {vueTopprogress} from "vue-top-progress";
 
