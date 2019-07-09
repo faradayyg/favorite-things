@@ -54,7 +54,7 @@ class FavouriteThingSerializer(serializers.Serializer):
     def update_rankings(self, intended_ranking, user_id, category_id):
         # check what position
         subsequent_positions = FavouriteThing.objects.filter(
-            ranking__gte=intended_ranking, category_id=category_id, user_id=user_id)
+            ranking__gte=intended_ranking, category_id=category_id, user_id=user_id).exclude(id=self.instance.id)
 
         # shift other ranks accordingly
         count = 1
