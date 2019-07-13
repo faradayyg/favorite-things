@@ -1,13 +1,13 @@
-from django.contrib import admin
+"""URLs for the thingsApi application."""
 from django.urls import path, re_path
 
 from thingsApi.views import (
-	FavouriteThingList, 
-	SingleFavouriteThing, 
-	CategoriesList, 
-	SingleCategory, 
-	CategoryThings ,
-	NotFound
+    FavouriteThingList,
+    SingleFavouriteThing,
+    CategoriesList,
+    SingleCategory,
+    CategoryThings,
+    NotFound
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
