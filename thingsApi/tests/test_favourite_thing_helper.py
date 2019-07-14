@@ -1,6 +1,10 @@
 """The models test file."""
 from django.test import TestCase
-from thingsApi.models import CustomUser, Category, FavouriteThing
+from thingsApi.models import CustomUser, Category
+from thingsApi.helpers.favourite_things_helper import (
+    create_favourite_thing,
+    update_favourite_thing
+)
 
 
 class TestModels(TestCase):
@@ -19,18 +23,21 @@ class TestModels(TestCase):
             user=self.user
         )
 
-        self.favourite_thing = FavouriteThing.objects.create(
-            title='favourite thing',
-            description='the thing I love most',
-            user_id=self.user.id,
-            category=self.category
+        self.favourite_thing = create_favourite_thing(
+            {
+                'title': 'Favourite thing First',
+                'description': 'this is the first one',
+                'user_id': self.user.id,
+                'category_id': self.category.id
+            }
         )
-
-        self.second_favourite_thing = FavouriteThing.objects.create(
-            title='second favourite thing',
-            description='the thing I love most',
-            user_id=self.user.id,
-            category=self.category
+        self.second_favourite_thing = create_favourite_thing(
+            {
+                'title': 'Favourite thing Second',
+                'description': 'this is the second too',
+                'user_id': self.user.id,
+                'category_id': self.category.id
+            }
         )
 
     def refresh_all_columns(self):
@@ -50,19 +57,21 @@ class TestModels(TestCase):
         """
         Test that favourite things reorder.
 
-        Check that creating a new favorite thing in an existing
+        Check that creating a new favourite thing in an existing
         position shifts others of the same category by the same user downwards.
         """
-        third_favorite_thing = FavouriteThing.objects.create(
-            title='third favourite thing',
-            description='the thing I love most',
-            user_id=self.user.id,
-            category=self.category,
-            ranking=1
+        third_favourite_thing = create_favourite_thing(
+            {
+                'title': 'Favourite thing Third',
+                'description': 'this is the third one',
+                'user_id': self.user.id,
+                'category_id': self.category.id,
+                'ranking': 1
+            }
         )
 
         self.refresh_all_columns()
-        self.assertEquals(third_favorite_thing.ranking, 1)
+        self.assertEquals(third_favourite_thing.ranking, 1)
         self.assertEquals(self.second_favourite_thing.ranking, 3)
         self.assertEquals(self.favourite_thing.ranking, 2)
 
@@ -73,18 +82,19 @@ class TestModels(TestCase):
         Test that favourite thing is added at the least rank
         when ranking is not specified in the input.
         """
-        third_thing = FavouriteThing.objects.create(
-            title='second favourite thing',
-            description='the thing I love most',
-            user_id=self.user.id,
-            category=self.category,
+        third_favourite_thing = create_favourite_thing(
+            {
+                'title': 'Favourite thing Third',
+                'description': 'this is the third one',
+                'user_id': self.user.id,
+                'category_id': self.category.id
+            }
         )
-        third_thing.save()
-        self.assertEquals(third_thing.ranking, 3)
+        self.assertEquals(third_favourite_thing.ranking, 3)
 
     def test_favourite_thing_updates_ranking_and_reorders(self):
         """Favourite thing should reorder when ranking is updated."""
-        self.second_favourite_thing.ranking = 1
+        update_favourite_thing(self.second_favourite_thing, {'ranking': 1})
         self.second_favourite_thing.save()
         self.refresh_all_columns()
         self.assertEquals(self.second_favourite_thing.ranking, 1)
